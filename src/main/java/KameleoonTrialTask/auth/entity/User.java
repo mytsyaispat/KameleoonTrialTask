@@ -2,10 +2,14 @@ package KameleoonTrialTask.auth.entity;
 
 import KameleoonTrialTask.logic.entity.Quote;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,9 +25,14 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
+    @Size(min = 5, max = 50, message = "Username length should be at least 5 and maximum 50 characters!")
     private String username;
     @Column(unique = true)
+    @Email
+    @NotBlank(message = "Email must not be empty!")
     private String email;
+    @Size(min = 5, message = "Password length should be at least 8 characters!")
+    @NotBlank(message = "Password must not be empty!")
     private String password;
     @Column(name = "date_of_creation")
     private LocalDateTime dateOfCreation;
@@ -37,9 +46,16 @@ public class User implements UserDetails {
         dateOfCreation = now();
     }
 
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
     public User() {}
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -62,6 +78,7 @@ public class User implements UserDetails {
         this.username = username.toLowerCase();
     }
 
+    @JsonIgnore
     public Long getId() {
         return id;
     }
@@ -71,6 +88,7 @@ public class User implements UserDetails {
         this.id = id;
     }
 
+    @JsonIgnore
     public String getEmail() {
         return email;
     }
@@ -79,6 +97,7 @@ public class User implements UserDetails {
         this.email = email.toLowerCase();
     }
 
+    @JsonIgnore
     public LocalDateTime getDateOfCreation() {
         return dateOfCreation;
     }

@@ -1,6 +1,7 @@
 package KameleoonTrialTask.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,6 +25,9 @@ public class WebConfig {
         return http.httpBasic()
                 .and().csrf().disable().headers().frameOptions().disable()
                 .and().authorizeHttpRequests(auth -> {
+                    auth.mvcMatchers(HttpMethod.POST, "/quote").authenticated();
+                    auth.mvcMatchers(HttpMethod.DELETE, "/quote/*").authenticated();
+                    auth.mvcMatchers( "/vote/**", "/quote", "/vote").authenticated();
                     auth.mvcMatchers("/**").permitAll();
                     //auth.mvcMatchers("/**").authenticated();
                 })
@@ -31,8 +35,9 @@ public class WebConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager (AuthenticationManagerBuilder auth) throws Exception {
-        return auth.userDetailsService(userDetailsService)
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder())
                 .and().build();
     }

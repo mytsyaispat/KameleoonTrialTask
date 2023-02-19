@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
         if (optionalUser.isPresent()) throw new ResponseStatusException(HttpStatus.CONFLICT, "This email is already taken");
         User user = new User(userData).setPasswordAndReturnUser(passwordEncoder.encode(userData.getPassword()));
         userRepository.save(user);
-        return null;
+        return ResponseEntity.ok("User successfully created!");
     }
 
     @Override
@@ -46,4 +46,8 @@ public class UserServiceImpl implements UserService {
         return optionalUser.get();
     }
 
+    @Override
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 }
