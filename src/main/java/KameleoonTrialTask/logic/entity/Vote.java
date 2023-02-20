@@ -3,6 +3,7 @@ package KameleoonTrialTask.logic.entity;
 import KameleoonTrialTask.auth.entity.User;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vote", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "quote_id"})})
@@ -18,12 +19,14 @@ public class Vote {
     @ManyToOne
     @JoinColumn(name = "quote_id", nullable = false, referencedColumnName = "id")
     private Quote quote;
+    private LocalDateTime date = LocalDateTime.now();
 
 
     public Vote(int voteNumber, User user, Quote quote) {
         this.voteNumber = voteNumber;
         this.user = user;
         this.quote = quote;
+
     }
 
     public Vote() {}
@@ -58,5 +61,13 @@ public class Vote {
 
     public void setQuote(Quote quote) {
         this.quote = quote;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 }

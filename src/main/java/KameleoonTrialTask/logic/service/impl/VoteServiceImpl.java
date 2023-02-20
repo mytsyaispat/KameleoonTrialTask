@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -68,5 +70,10 @@ public class VoteServiceImpl implements VoteService {
         Vote vote = new Vote(voteNumber, user, quote);
         voteRepository.save(vote);
         return ResponseEntity.ok("The vote has been successfully added!");
+    }
+
+    @Override
+    public List<Map<String, Object>> getStatistics(Long quoteId) {
+        return voteRepository.findAllByQuoteId(quoteId);
     }
 }

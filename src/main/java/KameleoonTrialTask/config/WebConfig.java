@@ -27,7 +27,7 @@ public class WebConfig {
                 .and().authorizeHttpRequests(auth -> {
                     auth.mvcMatchers(HttpMethod.POST, "/quote").authenticated();
                     auth.mvcMatchers(HttpMethod.DELETE, "/quote/*").authenticated();
-                    auth.mvcMatchers( HttpMethod.PUT, "/vote/*").authenticated();
+                    auth.mvcMatchers(HttpMethod.PUT, "/vote-plus/*", "/vote-plus/*").authenticated();
                     auth.mvcMatchers("/**").permitAll();
                 })
                 .build();
