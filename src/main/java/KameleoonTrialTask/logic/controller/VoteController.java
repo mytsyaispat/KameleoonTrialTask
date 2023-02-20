@@ -18,13 +18,13 @@ public class VoteController {
     }
 
     @PutMapping("vote-plus/{id}")
-    public ResponseEntity<String> plusVote(@PathVariable("id") Long quoteId, @AuthenticationPrincipal User user) {
-        return voteService.setVote(quoteId, null, true);
+    public ResponseEntity<String> plusVote(@PathVariable("id") Long quoteId) {
+        return voteService.setVote(quoteId, 1);
     }
 
     @PutMapping("vote-minus/{id}")
-    public ResponseEntity<String> minusVote(@PathVariable("id") Long quoteId, @AuthenticationPrincipal User user) {
-        return voteService.setVote(quoteId, null, false);
+    public ResponseEntity<String> minusVote(@PathVariable("id") Long quoteId) {
+        return voteService.setVote(quoteId, -1);
     }
 
 }

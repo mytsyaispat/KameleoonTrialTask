@@ -4,6 +4,7 @@ import KameleoonTrialTask.auth.entity.User;
 import KameleoonTrialTask.auth.service.UserService;
 import KameleoonTrialTask.config.ParamConfig;
 import KameleoonTrialTask.logic.entity.Quote;
+import KameleoonTrialTask.logic.entity.VoteSum;
 import KameleoonTrialTask.logic.repository.QuoteRepository;
 import KameleoonTrialTask.logic.service.QuoteService;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -35,7 +37,7 @@ public class QuoteServiceImpl implements QuoteService {
     public ResponseEntity<String> createQuote(Quote quoteData) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<User> user = userService.getUserByUsername(authentication.getName());
-        Quote quote = new Quote(quoteData.getContent(), LocalDateTime.now(), user.orElse(null));
+        Quote quote = new Quote(quoteData.getContent(), LocalDateTime.now(), user.orElse(null), new VoteSum());
         quoteRepository.save(quote);
         return ResponseEntity.ok("Quote successfully created!");
     }
@@ -64,11 +66,18 @@ public class QuoteServiceImpl implements QuoteService {
         return ResponseEntity.ok("Quote successfully removed!");
     }
 
-    public List<Quote> getTopTenQuotes() {
-        return null;// quoteRepository.getTopTenQuotes();
-    }
-    public List<Quote> getTenWorstQuotes() {
-        return null;// quoteRepository.getTenWorstQuotes();
+    @Override
+    public List<Map<String, Object>> getTopTenQuotes() {
+        return quoteRepository.getTopTenQuotes();
     }
 
+    @Override
+    public List<Map<String, Object>> getTenWorstQuotes() {
+        return quoteRepository.getTenWorstQuotes();
+    }
+
+    @Override
+    public void saveQuote(Quote quote) {
+        quoteRepository.save(quote);
+    }
 }

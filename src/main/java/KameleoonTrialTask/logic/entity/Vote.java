@@ -10,8 +10,8 @@ public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "is_positive_vote", nullable = false)
-    private boolean isPositiveVote;
+    @Column(name = "vote_number", nullable = false)
+    private int voteNumber;
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
     private User user;
@@ -19,11 +19,14 @@ public class Vote {
     @JoinColumn(name = "quote_id", nullable = false, referencedColumnName = "id")
     private Quote quote;
 
-    public Vote(boolean isPositiveVote, User user, Quote quote) {
-        this.isPositiveVote = isPositiveVote;
+
+    public Vote(int voteNumber, User user, Quote quote) {
+        this.voteNumber = voteNumber;
         this.user = user;
         this.quote = quote;
     }
+
+    public Vote() {}
 
     public Long getId() {
         return id;
@@ -33,12 +36,12 @@ public class Vote {
         this.id = id;
     }
 
-    public boolean isPositiveVote() {
-        return isPositiveVote;
+    public int getVoteNumber() {
+        return voteNumber;
     }
 
-    public void setPositiveVote(boolean positiveVote) {
-        isPositiveVote = positiveVote;
+    public void setVoteNumber(int voteNumber) {
+        this.voteNumber = voteNumber;
     }
 
     public User getUser() {

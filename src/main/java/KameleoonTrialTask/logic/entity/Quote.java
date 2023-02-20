@@ -26,11 +26,15 @@ public class Quote {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "vote_sum_id", referencedColumnName = "id")
+    private VoteSum voteSum;
 
-    public Quote(String content, LocalDateTime date, User user) {
+    public Quote(String content, LocalDateTime date, User user, VoteSum voteSum) {
         this.content = content;
         this.date = date;
         this.user = user;
+        this.voteSum = voteSum;
     }
 
     public Quote() {}
@@ -82,5 +86,14 @@ public class Quote {
     @JsonIgnore
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public VoteSum getVoteSum() {
+        return voteSum;
+    }
+
+    @JsonIgnore
+    public void setVoteSum(VoteSum voteSum) {
+        this.voteSum = voteSum;
     }
 }

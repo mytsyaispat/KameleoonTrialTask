@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -47,15 +48,15 @@ public class QuoteController {
     }
 
     @GetMapping("quotes-top")
-    public ResponseEntity<List<Quote>> getTopTenQuotes() {
-        List<Quote> quoteList = quoteService.getTopTenQuotes();
+    public ResponseEntity<List<Map<String, Object>>> getTopTenQuotes() {
+        List<Map<String, Object>> quoteList = quoteService.getTopTenQuotes();
         if (quoteList.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return ResponseEntity.ok(quoteList);
     }
 
     @GetMapping("quotes-worst")
-    public ResponseEntity<List<Quote>> getTenWorstQuotes() {
-        List<Quote> quoteList = quoteService.getTenWorstQuotes();
+    public ResponseEntity<List<Map<String, Object>>> getTenWorstQuotes() {
+        List<Map<String, Object>> quoteList = quoteService.getTenWorstQuotes();
         if (quoteList.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return ResponseEntity.ok(quoteList);
     }
